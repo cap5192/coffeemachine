@@ -85,59 +85,74 @@ def get_change():
         return True
     elif money > cost(user_input):
         change = round(money - cost(user_input), 2)
+        return True
     else:
         return False
         print("Sorry that's not enough money. Money refunded")
 
+def ask_money():
+    global money
+    # TODO 5. Process coins.
+    q = float(input("how many quarters?"))
+    d = float(input("how many dimes?"))
+    n = float(input("how many nickles?"))
+    p = float(input("how many pennies?"))
+    money = cal_coins(q, d, n, p)
+
 resources = {
-    "water": 300,0
+    "water": 300,
     "milk": 200,
     "coffee": 100,
 }
 
-# TODO 2. Turn off the Coffee Machine by entering “off” to the prompt.
+flag = False
 
-user_input = input("What would you like? (espresso/latte/cappuccino): ")
+while flag == False:
 
-if user_input == "report":
-    get_resources()
+    # TODO 2. Turn off the Coffee Machine by entering “off” to the prompt.
 
-# TODO 5. Process coins.
-q = float(input("how many quarters?"))
-d = float(input("how many dimes?"))
-n = float(input("how many nickles?"))
-p = float(input("how many pennies?"))
-money = cal_coins(q, d, n, p)
+    user_input = input("What would you like? (espresso/latte/cappuccino): ")
 
-# if money == cost(user_input):
-#     print("Perfect money")
-# elif money > cost(user_input):
-#     change = round(money - cost(user_input),2)
-#     print(change)
-# else:
-#     print("Sorry that's not enough money. Money refunded")
+    if user_input == "off":
+        flag = True
+        break
+    if user_input == "report":
+        get_resources()
 
+    if user_input == "espresso":
+        if enough_resources(user_input) == True:
+            ask_money()
+            if get_change() == True:
+                resources["water"] -= MENU["espresso"]["ingredients"]["water"]
+                resources["coffee"] -= MENU["espresso"]["ingredients"]["coffee"]
+                print(f"Here is your {user_input}")
+            else:
+                pass
+    elif user_input == "latte":
+        if enough_resources(user_input) == True:
+            ask_money()
+            if get_change() == True:
+                    resources["water"] -= MENU["latte"]["ingredients"]["water"]
+                    resources["coffee"] -= MENU["latte"]["ingredients"]["coffee"]
+                    resources["milk"] -= MENU["latte"]["ingredients"]["milk"]
+                    print(f"Here is your {user_input}")
+            else:
+                pass
+    elif user_input == "cappuccino":
+        if enough_resources(user_input) == True:
+            ask_money()
+            if get_change() == True:
+                    resources["water"] -= MENU["cappuccino"]["ingredients"]["water"]
+                    resources["coffee"] -= MENU["cappuccino"]["ingredients"]["coffee"]
+                    resources["milk"] -= MENU["cappuccino"]["ingredients"]["milk"]
+                    print(f"Here is your {user_input}")
+            else:
+                pass
+    # print(resources)
+    # print(change)
+    # print(user_input)
+    # print(get_change())
+    if change != 0:
+        print(f"Here is {change} dollars in change.")
+        change = 0
 
-if user_input == "espresso":
-    if enough_resources(user_input) == True:
-        resources["water"] -= MENU["espresso"]["ingredients"]["water"]
-        resources["coffee"] -= MENU["espresso"]["ingredients"]["coffee"]
-
-elif user_input == "latte":
-    if enough_resources(user_input) == True:
-        resources["water"] -= MENU["latte"]["ingredients"]["water"]
-        resources["coffee"] -= MENU["latte"]["ingredients"]["coffee"]
-        resources["milk"] -= MENU["latte"]["ingredients"]["milk"]
-elif user_input == "cappuccino":
-    if enough_resources(user_input) == True:
-        resources["water"] -= MENU["cappuccino"]["ingredients"]["water"]
-        resources["coffee"] -= MENU["cappuccino"]["ingredients"]["coffee"]
-        resources["milk"] -= MENU["cappuccino"]["ingredients"]["milk"]
-print(resources)
-
-
-
-
-
-# TODO 6. Check transaction successful?
-# TODO 7. Make Coffee
